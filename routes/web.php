@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\PublicProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -25,6 +26,9 @@ Route::middleware(['auth', 'verified'])->group(function(){
     Route::get('/@{username}/{post:slug}', [PostController::class, 'show'])
         ->name('post.show');
 });
+
+Route::get('/@{user:username}', [PublicProfileController::class, 'show'])
+    ->name('profile.show');
 
 Route::get('/dashboard/category/{category}',[CategoryController::class, 'show'])->middleware(['auth', 'verified'])->name('dashboard.category');
 Route::get('/dashboard/post/{post}', [PostController::class, 'show'])->middleware(['auth', 'verified'])->name('dashboard.show');
