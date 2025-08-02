@@ -22,7 +22,7 @@
                         <h3>
                             {{ $user->name }}
                         </h3>
-                        <p class="text-gray-500">26k followers</p>
+                        <p class="text-gray-500">{{$user->follower->count()}} followers</p>
                         <p>
                             {{ $user->bio }}
                         </p>

@@ -8,8 +8,9 @@ class PublicProfileController extends Controller
 {
     public function show(User $user)
     {
-        // dd($user);
-        $posts = $user->post()->latest()->paginate(); //paginated
+        $posts = $user->post()->latest()->paginate(); 
+        // dd($user->post());
+        
         return view('profile.show', [
             'user' => $user,
             'posts' => $posts
