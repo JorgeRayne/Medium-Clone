@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ClapController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PublicProfileController;
@@ -16,6 +17,9 @@ Route::middleware(['auth', 'verified'])->group(function(){
         ->middleware(['auth', 'verified'])
         ->name('dashboard');
 
+    Route::get('/category/{category}', [PostController::class , 'category'])
+        ->name('post.byCategory');
+
     Route::get('/post/create}', [PostController::class, 'create'])
         ->middleware(['auth', 'verified'])
         ->name('post.create');
@@ -29,6 +33,9 @@ Route::middleware(['auth', 'verified'])->group(function(){
 
     Route::post('/follow/{user}',[FollowController::class, 'followUnfollow'])
         ->name('follow');
+
+    Route::post('/clap/{post}', [ClapController::class, 'clap'])
+        ->name('clap');    
 });
 
 Route::get('/@{user:username}', [PublicProfileController::class, 'show'])

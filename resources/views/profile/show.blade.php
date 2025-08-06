@@ -17,7 +17,7 @@
                         </div>
                         {{$posts}}
                     </div>
-                <x-follow-ctr :user="$user  ">
+                    <x-follow-ctr :user="$user  ">
                         <x-user-avatar :user="$user" size="w-24 h-42" />
                         <h3>
                             {{ $user->name }}
@@ -34,7 +34,7 @@
                                 <button 
                                     @click="follow()" 
                                     class="rounded-full px-4 py-2 text-white" 
-                                    x-text="following ? 'Unfollow' : 'Follow' "
+                                    x-text="following ? 'Unfollow' : 'Follow'"
                                     :class="following ? 'bg-red-600' : 'bg-emerald-600' "
                                     >
                                 </button>

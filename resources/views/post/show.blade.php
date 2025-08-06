@@ -14,7 +14,10 @@
                                 {{$post->user->username}}    
                             </a>
                             &middot;
-                            <button class="ml-4" x-text="following ? 'Unfollow' : 'Follow'" :class="following ? 'text-red-700' : 'text-emerald-700' " @click="follow()"></button>
+                            @if ($post->user->id != auth()->user()->id)
+                                <button class="ml-4" x-text="following ? 'Unfollow' : 'Follow'" :class="following ? 'text-red-700' : 'text-emerald-700' " @click="follow()"></button>    
+                            @endif
+                            
                         </x-follow-ctr>
                         <div class="flex text-gray-700 gap-2 text-sm">
                             {{
@@ -30,9 +33,9 @@
                 </div>
                 {{-- User Avatar --}}
 
+
                 {{-- Clap Section --}}
-                <x-clapp-button>                    
-                </x-clap-button>
+                <x-clapp-button :post="$post"></x-clapp-button>                    
                 {{-- Clap Section --}}
 
 
@@ -53,7 +56,7 @@
                     </span>
                 </div>
                 <div>
-                    <x-clapp-button>                    
+                    <x-clapp-button :post="$post">                    
                     </x-clap-button>
                 </div>
             </div>

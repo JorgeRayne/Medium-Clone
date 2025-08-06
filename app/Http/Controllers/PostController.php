@@ -17,9 +17,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        // dd($user);
-        // $post = Post::with('user')->paginate(2);
-        $post = Post::orderBy('created_at', 'desc')->paginate(10);
+        // $post = Post::orderBy('created_at', 'desc')->paginate(10);
+        $post = Post::latest()->paginate(10);
         
         return view('post.home', [
             'posts' => $post
@@ -89,5 +88,14 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         //
+    }
+
+    public function category(Category $category)
+    {
+        $posts = $category->posts()->simplePaginate(5);
+
+        return view('post.home', [
+            'posts' => $posts
+        ]);
     }
 }
