@@ -17,8 +17,17 @@ class PostController extends Controller
      */
     public function index()
     {
+        $user = auth()->user();
+
+        $query = Post::latest();
+        if($user){
+            $ids = $user->following()->pluck('users.id');
+            $query->whereIn('user_id', $ids);
+        } 
         // $post = Post::orderBy('created_at', 'desc')->paginate(10);
-        $post = Post::latest()->paginate(10);
+
+        // dd(auth()->user()->following()->pluck('users.id'));
+        $post = $query->paginate(10);
         
         return view('post.home', [
             'posts' => $post
@@ -43,15 +52,18 @@ class PostController extends Controller
 
         $validated = $request->validated();
 
-        $image = $validated['image'];
-        unset($validated['image']);
+        // $image = $validated['image'];
+        // unset($validated['image']);
         $validated['user_id'] = Auth::id();
         $validated['slug'] = Str::slug($validated['title']);
 
-        $imagePath = $image->store('posts', 'public');
-        $validated['image'] = $imagePath;
+        // $imagePath = $image->store('posts', 'public');
+        // $validated['image'] = $imagePath;
 
-        Post::create($validated);
+        $post = Post::create($validated);
+
+        $post->addMediaFromRequest('image')
+            ->toMediaCollection();
 
         return redirect()->route('dashboard');
     }

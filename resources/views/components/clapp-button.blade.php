@@ -1,9 +1,10 @@
 @props(['post'])
 
-<div x-data="{
+@auth
+    <div x-data="{
         hasClapped: {{ auth()->user()->hasClapped($post) ? 'true' : 'false' }},
         count: {{ $post->claps()->count() }},
-        clap() {
+        clap() 
             axios.post('/clap/{{ $post->id }}')
                 .then(response => {
                     console.log(response)
@@ -32,3 +33,4 @@
             <span x-text="count"></span>
         </button>
     </div>
+@endauth

@@ -14,9 +14,11 @@
                                 {{$post->user->username}}    
                             </a>
                             &middot;
-                            @if ($post->user->id != auth()->user()->id)
-                                <button class="ml-4" x-text="following ? 'Unfollow' : 'Follow'" :class="following ? 'text-red-700' : 'text-emerald-700' " @click="follow()"></button>    
-                            @endif
+                            @auth
+                                @if ($post->user->id != auth()->user()->id)
+                                    <button class="ml-4" x-text="following ? 'Unfollow' : 'Follow'" :class="following ? 'text-red-700' : 'text-emerald-700' " @click="follow()"></button>    
+                                @endif                                
+                            @endauth
                             
                         </x-follow-ctr>
                         <div class="flex text-gray-700 gap-2 text-sm">

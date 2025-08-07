@@ -5,10 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Post extends Model
+class Post extends Model implements HasMedia
 {
     use HasFactory;
+    use InteractsWithMedia;
 
     protected $fillable = [
         'image',
@@ -20,6 +24,14 @@ class Post extends Model
         'publish_at'
     ];
 
+
+    public function registerMediaCollections(?Media $media = null): void
+    {
+        $this
+            ->addMediaConversion('preview')
+            ->width(400)
+            ->nonQueued();
+    }
 
     public function user()
     {
@@ -38,7 +50,7 @@ class Post extends Model
 
     public function imageUrl()
     {
-        return Storage::url($this->image);
+        return optional($this->getFirstMedia())->getUrl();
     }
 
     public function readTime($wordPerMinute = 100)

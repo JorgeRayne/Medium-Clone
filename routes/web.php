@@ -12,10 +12,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth', 'verified'])->group(function(){
+Route::get('/@{user:username}', [PublicProfileController::class, 'show'])
+    ->name('profile.show');
+
     Route::get('/', [PostController::class, 'index'])
-        ->middleware(['auth', 'verified'])
-        ->name('dashboard');
+    ->name('dashboard');
+
+Route::get('/@{username}/{post:slug}', [PostController::class, 'show'])
+        ->name('post.show');
+
+Route::middleware(['auth', 'verified'])->group(function(){
 
     Route::get('/category/{category}', [PostController::class , 'category'])
         ->name('post.byCategory');
@@ -28,8 +34,7 @@ Route::middleware(['auth', 'verified'])->group(function(){
         ->middleware(['auth', 'verified'])
         ->name('post.store');
 
-    Route::get('/@{username}/{post:slug}', [PostController::class, 'show'])
-        ->name('post.show');
+    
 
     Route::post('/follow/{user}',[FollowController::class, 'followUnfollow'])
         ->name('follow');
@@ -38,8 +43,6 @@ Route::middleware(['auth', 'verified'])->group(function(){
         ->name('clap');    
 });
 
-Route::get('/@{user:username}', [PublicProfileController::class, 'show'])
-    ->name('profile.show');
 
 Route::get('/dashboard/category/{category}',[CategoryController::class, 'show'])->middleware(['auth', 'verified'])->name('dashboard.category');
 Route::get('/dashboard/post/{post}', [PostController::class, 'show'])->middleware(['auth', 'verified'])->name('dashboard.show');
